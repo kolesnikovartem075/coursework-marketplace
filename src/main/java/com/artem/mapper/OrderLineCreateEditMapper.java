@@ -20,7 +20,7 @@ public interface OrderLineCreateEditMapper {
     OrderLine map(OrderLineCreateEditDto customerOrderCreateEditDto, @MappingTarget OrderLine entity);
 
     @AfterMapping
-    default void map(OrderLineCreateEditDto customerOrderCreateEditDto,
+    default void afterMapping(OrderLineCreateEditDto customerOrderCreateEditDto,
                      @MappingTarget OrderLine entity,
                      @Context OrderRepository orderRepository,
                      @Context ProductRepository productRepository) {

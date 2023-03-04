@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{parts/layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Customer</title>
+</head>
+<body>
+<div layout:fragment="content">
+<form th:action="@{/customers/{customerId}/updateCustomer(customerId=${customer.id})}" method="post" th:object="${customer}">
+  <h4>Edit Customer</h4>
+  <div class="row mb-5">
+    <label for="firstName" class="col-sm-2 col-form-label">First name:</label>
+    <div class="col-sm-2">
+      <input type="text" class="form-control" id="firstName" th:field="*{firstName}">
+      <div th:if="${bindingResult}">
+        <div th:if="${e}" th:each="e : ${bindingResult.getFieldErrors('firstName')}" th:text="${e.getDefaultMessage()}"  class="text-danger"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-5">
+    <label for="lastName" class="col-sm-2 col-form-label">Last name:</label>
+    <div class="col-sm-2">
+      <input type="text" class="form-control" id="lastName" th:field="*{lastName}">
+      <div th:if="${bindingResult}">
+        <div th:if="${e}" th:each="e : ${bindingResult.getFieldErrors('lastName')}" th:text="${e.getDefaultMessage()}"  class="text-danger"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-5">
+    <label for="email" class="col-sm-2 col-form-label">Email:</label>
+    <div class="col-sm-2">
+      <input type="email" class="form-control" id="email" th:field="*{email}">
+      <div th:if="${bindingResult}">
+        <div th:if="${e}" th:each="e : ${bindingResult.getFieldErrors('email')}" th:text="${e.getDefaultMessage()}"  class="text-danger"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-5">
+    <label for="phone" class="col-sm-2 col-form-label">Phone:</label>
+    <div class="col-sm-2">
+      <input type="text" class="form-control" id="phone" th:field="*{phone}">
+      <div th:if="${bindingResult}">
+        <div th:if="${e}" th:each="e : ${bindingResult.getFieldErrors('phone')}" th:text="${e.getDefaultMessage()}"  class="text-danger"></div>
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-primary mt-2" type="submit">Update</button>
+</form>
+<form th:action="@{/customers/{customerId}/delete(customerId=${customer.id})}" method="post">
+  <button class="btn btn-outline-danger mt-2" type="submit">Remove</button>
+</form>
+</div>
+</body>
+</html>

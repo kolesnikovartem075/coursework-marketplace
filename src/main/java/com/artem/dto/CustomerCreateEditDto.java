@@ -9,4 +9,5 @@ public class CustomerCreateEditDto {
     String lastName;
     String email;
     String phone;
+    String password;
 }

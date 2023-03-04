@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{parts/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row">
+        <div th:each="product : ${products}" class="col-sm-3">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" th:src="@{/api/v1/products/{productId}/avatar(productId=${product.id})}"
+                         alt="Product Image">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${product.title}">Product title</h5>
+                        <p class="card-text" th:text="${product.description}">Product description</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" th:text="${product.quantity}">Product Price</li>
+                        <li class="list-group-item" th:text="${product.price}">Product quantity</li>
+                    </ul>
+                    <div class="card-body">
+                        <a th:href="@{/products/{productId}(productId=${product.id})}" class="card-link">Product Info</a>
+                        <a href="#" class="card-link">Add to shipping cart</a>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

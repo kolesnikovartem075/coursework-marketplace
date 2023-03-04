@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{parts/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h4>Product</h4>
+    <div class="row mb-5">
+        <label for="title" class="col-sm-2 col-form-label">Title:</label>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" id="title"
+                   th:placeholder="${product.title}"
+                   disabled>
+        </div>
+    </div>
+    <div class="row mb-5">
+        <label for="description" class="col-sm-2 col-form-label">Description:</label>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" id="description"
+                   th:placeholder="${product.description}"
+                   disabled>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <label for="image" class="col-sm-2 col-form-label">Image:</label>
+        <div class="col-sm-2">
+            <img id="image" th:src="@{/api/v1/products/{productId}/avatar(productId=${product.id})}" alt="Product image"
+                 style="width: 300px; height: 300px;">
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <label for="quantity" class="col-sm-2 col-form-label">Quantity:</label>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" id="quantity"
+                   th:placeholder="${product.quantity}"
+                   disabled>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <label for="price" class="col-sm-2 col-form-label">Price:</label>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" id="price"
+                   th:placeholder="${product.price}"
+                   disabled>
+        </div>
+    </div>
+
+    <div class="btn-group mt-2">
+        <a class="btn btn-primary p-lg"
+           th:href="@{/products/{productId}/update(productId=${product.id})}"
+           role="button">Update</a>
+        <form th:action="@{/products/{productId}/delete(productId=${product.id})}" method="post">
+            <button type="submit" class="btn btn-primary btn-danger ms-3">Remove</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
