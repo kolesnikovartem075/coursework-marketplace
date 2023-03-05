@@ -2,6 +2,7 @@ package com.artem.service;
 
 
 import com.artem.database.repository.CustomerRepository;
+import com.artem.database.repository.ManagerRepository;
 import com.artem.dto.CustomerCreateEditDto;
 import com.artem.dto.CustomerReadDto;
 import com.artem.mapper.CustomerCreateEditMapper;
@@ -20,8 +21,9 @@ import java.util.Optional;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final ManagerRepository managerRepository;
     private final CustomerReadMapper customerReadMapper = Mappers.getMapper(CustomerReadMapper.class);
-    private final CustomerCreateEditMapper customerCreateEditMapper = Mappers.getMapper(CustomerCreateEditMapper.class);
+    private final CustomerCreateEditMapper customerCreateEditMapper;
 
     public List<CustomerReadDto> findAll() {
         return customerRepository.findAll().stream()
@@ -34,10 +36,16 @@ public class CustomerService {
                 .map(customerReadMapper::map);
     }
 
+    public Optional<CustomerReadDto> findByEmail(String email) {
+        return customerRepository.findByEmail(email)
+                .map(customerReadMapper::map);
+    }
+
     @Transactional
     public CustomerReadDto create(CustomerCreateEditDto customerDto) {
         return Optional.of(customerDto)
                 .map(customerCreateEditMapper::map)
+                .filter(entity -> managerRepository.findByUsername(entity.getEmail()).isEmpty())
                 .map(customerRepository::save)
                 .map(customerReadMapper::map)
                 .orElseThrow();
@@ -47,6 +55,7 @@ public class CustomerService {
     public Optional<CustomerReadDto> update(Long id, CustomerCreateEditDto customerDto) {
         return customerRepository.findById(id)
                 .map(entity -> customerCreateEditMapper.map(customerDto, entity))
+                .filter(entity -> managerRepository.findByUsername(entity.getEmail()).isEmpty())
                 .map(customerRepository::saveAndFlush)
                 .map(customerReadMapper::map);
     }

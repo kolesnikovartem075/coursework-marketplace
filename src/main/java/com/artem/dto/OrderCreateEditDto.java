@@ -1,5 +1,6 @@
 package com.artem.dto;
 
+import com.artem.database.entity.OrderStatus;
 import lombok.Value;
 
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ public class OrderCreateEditDto {
     Long paymentMethodId;
 
 
-    String orderStatus;
+    OrderStatus orderStatus;
 
     Integer orderTotal;
 

@@ -9,21 +9,21 @@
 <body>
 <div layout:fragment="content">
     <div class="row">
-        <div th:each="product : ${products}" class="col-sm-3">
+        <div th:each="product : ${products}" class="col-sm-3" th:if="${product.quantity} > 0">
                 <div class="card" style="width: 18rem;">
                     <img class="card-img-top" th:src="@{/api/v1/products/{productId}/avatar(productId=${product.id})}"
                          alt="Product Image">
                     <div class="card-body">
-                        <h5 class="card-title" th:text="${product.title}">Product title</h5>
+                        <h5 class="card-title" th:text="|Title: ${product.title}|">Product title</h5>
                         <p class="card-text" th:text="${product.description}">Product description</p>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item" th:text="${product.quantity}">Product Price</li>
-                        <li class="list-group-item" th:text="${product.price}">Product quantity</li>
+                        <li class="list-group-item" th:text="|Price: ${product.quantity}|">Product Quantity</li>
+                        <li class="list-group-item" th:text="|Quantity: ${product.price}|">Product price</li>
                     </ul>
                     <div class="card-body">
                         <a th:href="@{/products/{productId}(productId=${product.id})}" class="card-link">Product Info</a>
-                        <a href="#" class="card-link">Add to shipping cart</a>
+                        <a th:href="@{/shopping-cart/{productId}/put(productId=${product.id})}" class="card-link">Add to shipping cart</a>
                     </div>
                 </div>
         </div>

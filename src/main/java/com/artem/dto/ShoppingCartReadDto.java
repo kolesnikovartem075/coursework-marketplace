@@ -9,5 +9,9 @@ public class ShoppingCartReadDto {
 
     Long id;
 
+    Long customerId;
+
+    Integer totalPrice;
+
     List<ShoppingCartItemReadDto> items;
 }

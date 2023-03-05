@@ -6,36 +6,46 @@ import com.artem.database.entity.ShoppingCartItem;
 import com.artem.database.repository.ProductRepository;
 import com.artem.database.repository.ShoppingCartRepository;
 import com.artem.dto.ShoppingCartItemCreateEditDto;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface ShoppingCartItemCreateEditMapper {
+@Component
+@RequiredArgsConstructor
+public class ShoppingCartItemCreateEditMapper implements Mapper<ShoppingCartItemCreateEditDto, ShoppingCartItem> {
 
+    private final ProductRepository productRepository;
+    private final ShoppingCartRepository shoppingCartRepository;
 
-    ShoppingCartItem map(ShoppingCartItemCreateEditDto shoppingCartItemDto);
+    @Override
+    public ShoppingCartItem map(ShoppingCartItemCreateEditDto object) {
+        ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
+        ShoppingCart shoppingCart = getShoppingCart(object);
+        ProductCatalog productCatalog = getProductCatalog(object);
+        shoppingCartItem.setShoppingCart(shoppingCart);
+        shoppingCartItem.setProductCatalog(productCatalog);
+        copy(object, shoppingCartItem);
 
-    ShoppingCartItem map(ShoppingCartItemCreateEditDto shoppingCartItemDto, @MappingTarget ShoppingCartItem entity);
-
-    @AfterMapping
-    default void map(ShoppingCartItemCreateEditDto shoppingCartItemDto,
-                     @MappingTarget ShoppingCartItem entity,
-                     @Context ShoppingCartRepository shoppingCartRepository,
-                     @Context ProductRepository productRepository) {
-        ShoppingCart shoppingCart = getShoppingCart(shoppingCartItemDto, shoppingCartRepository);
-        ProductCatalog productCatalog = getProductCatalog(shoppingCartItemDto, productRepository);
-
-        entity.setShoppingCart(shoppingCart);
-        entity.setProductCatalog(productCatalog);
+        return shoppingCartItem;
     }
 
-    private static ProductCatalog getProductCatalog(ShoppingCartItemCreateEditDto shoppingCartItemDto, ProductRepository productRepository) {
-        return productRepository.findById(shoppingCartItemDto.getProductCatalogId()).orElseThrow();
+    @Override
+    public ShoppingCartItem map(ShoppingCartItemCreateEditDto fromObject, ShoppingCartItem toObject) {
+        copy(fromObject, toObject);
+        return toObject;
     }
 
-    private static ShoppingCart getShoppingCart(ShoppingCartItemCreateEditDto shoppingCartItemDto, ShoppingCartRepository shoppingCartRepository) {
-        return shoppingCartRepository.findById(shoppingCartItemDto.getShoppingCartId()).orElseThrow();
+    private void copy(ShoppingCartItemCreateEditDto object, ShoppingCartItem shoppingCartItem) {
+        shoppingCartItem.setQuantity(object.getQuantity());
+    }
+
+
+    private ProductCatalog getProductCatalog(ShoppingCartItemCreateEditDto shoppingCartItemDto) {
+        return productRepository.findById(shoppingCartItemDto.getProductCatalogId())
+                .orElseThrow();
+    }
+
+    private ShoppingCart getShoppingCart(ShoppingCartItemCreateEditDto shoppingCartItemDto) {
+        return shoppingCartRepository.findById(shoppingCartItemDto.getShoppingCartId())
+                .orElseThrow();
     }
 }

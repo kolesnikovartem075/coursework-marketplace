@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{parts/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping cart</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h4>Shopping cart</h4>
+    <div class="row">
+        <div th:each="item : ${shoppingCart.items}" class="col-sm-3">
+            <div class="card" style="width: 18rem;">
+                <form th:action="@{/shopping-cart-item/{shoppingCartItemId}/updateShoppingCartItem(shoppingCartItemId=${item.id})}"
+                      method="post" class="mb-3">
+                    <img class="card-img-top"
+                         th:src="@{/api/v1/products/{productId}/avatar(productId=${item.productCatalog.id})}"
+                         alt="Product Image">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${item.productCatalog.title}">Product title</h5>
+                        <p class="card-text" th:text="${item.productCatalog.description}">Product description</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <input hidden="hidden" name="productCatalogId" th:value="${item.productCatalog.id}">
+                        <li class="list-group-item" th:text="|Price: ${item.productCatalog.price}|">Product Price</li>
+                        <li class="list-group-item">
+                            <div class="row mb-3">
+                                <label for="quantity" class="col-sm-6 col-form-label">Quantity:</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="quantity" name="quantity"
+                                           th:value="${item.quantity}">
+                                </div>
+                                <div th:if="${bindingResult}">
+                                    <p class="text-danger" th:each="error : ${bindingResult.getAllErrors()}" th:if="${bindingResult.getTarget().getProductCatalogId() == item.productCatalog.id}"  th:text="|${error.defaultMessage} ${item.productCatalog.quantity}|">Error message</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary mt-2 col-sm-5" type="submit" style="font-size: 12px">Update
+                            </button>
+                        </li>
+                    </ul>
+                </form>
+                <form th:action="@{/shopping-cart-item/{shoppingCartItemId}/delete(shoppingCartItemId=${item.id})}"
+                      method="post">
+                    <button class="btn btn-outline-danger mt-2 mb-2 ms-2" type="submit" style="font-size: 12px">Remove from bucket</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-5 mt-5">
+        <label for="totalPrice" class="col-sm-2 col-form-label">Total price:</label>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" id="totalPrice"
+                   th:placeholder="${shoppingCart.totalPrice}"
+                   disabled>
+        </div>
+    </div>
+
+    <form th:action="@{/shopping-cart/{customerId}/checkout(customerId=${shoppingCart.customerId})}" method="post">
+        <button class="btn btn-outline-danger mt-2" type="submit">Checkout</button>
+    </form>
+</div>
+</body>
+</html>

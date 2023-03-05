@@ -12,20 +12,15 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "customer_directory")
-public class Customer implements BaseEntity<Long> {
+public class Manager implements BaseEntity<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String firstName;
-    private String lastName;
-
-    private String email;
-    private String phone;
+    private String username;
+    private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private String password;
 }

@@ -6,37 +6,48 @@ import com.artem.database.entity.ProductCatalog;
 import com.artem.database.repository.OrderRepository;
 import com.artem.database.repository.ProductRepository;
 import com.artem.dto.OrderLineCreateEditDto;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
+import lombok.RequiredArgsConstructor;
 import org.mapstruct.MappingTarget;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface OrderLineCreateEditMapper {
+@Component
+@RequiredArgsConstructor
+public class OrderLineCreateEditMapper implements Mapper<OrderLineCreateEditDto, OrderLine> {
+
+    private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
+
+    public OrderLine map(OrderLineCreateEditDto orderCreateEditDto) {
+        OrderLine order = new OrderLine();
+        copy(orderCreateEditDto, order);
+
+        return order;
+    }
+
+    public OrderLine map(OrderLineCreateEditDto orderCreateEditDto, @MappingTarget OrderLine entity) {
+        copy(orderCreateEditDto, entity);
+        return entity;
+    }
 
 
-    OrderLine map(OrderLineCreateEditDto customerOrderCreateEditDto);
+    private void copy(OrderLineCreateEditDto orderLineDto, OrderLine entity) {
+        Order customerOrder = getCustomerOrder(orderLineDto);
+        ProductCatalog productCatalog = getProductCatalog(orderLineDto);
 
-    OrderLine map(OrderLineCreateEditDto customerOrderCreateEditDto, @MappingTarget OrderLine entity);
-
-    @AfterMapping
-    default void afterMapping(OrderLineCreateEditDto customerOrderCreateEditDto,
-                     @MappingTarget OrderLine entity,
-                     @Context OrderRepository orderRepository,
-                     @Context ProductRepository productRepository) {
-        Order order = getCustomerOrder(customerOrderCreateEditDto, orderRepository);
-        ProductCatalog productCatalog = getProductCatalog(customerOrderCreateEditDto, productRepository);
-
-        entity.setOrder(order);
+        entity.setOrder(customerOrder);
         entity.setProductCatalog(productCatalog);
+        entity.setPrice(orderLineDto.getPrice());
+        entity.setQuantity(orderLineDto.getQuantity());
     }
 
-    private static ProductCatalog getProductCatalog(OrderLineCreateEditDto customerOrderCreateEditDto, ProductRepository productRepository) {
-        return productRepository.findById(customerOrderCreateEditDto.getProductCatalogId()).orElseThrow();
-    }
-
-    private static Order getCustomerOrder(OrderLineCreateEditDto customerOrderCreateEditDto, OrderRepository orderRepository) {
+    private Order getCustomerOrder(OrderLineCreateEditDto customerOrderCreateEditDto) {
         return orderRepository.findById(customerOrderCreateEditDto.getCustomerOrderId())
                 .orElseThrow();
     }
+
+    private ProductCatalog getProductCatalog(OrderLineCreateEditDto orderLineDto) {
+        return productRepository.findById(orderLineDto.getProductCatalogId())
+                .orElseThrow();
+    }
 }
+

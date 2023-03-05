@@ -1,25 +1,40 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8">
-  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-  <title>Layout</title>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <title>Layout</title>
 </head>
 <body>
 <div class="container mb-3">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" th:href="@{/products/}">Products</a>
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/customers/}">Customers</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/products}">Products</a>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="hasAuthority('MANAGER')" th:href="@{/customers/}">Customers</a>
+                </li>
+                <li class="nav-item ms-2">
+                    <a class="nav-link" sec:authorize="hasAuthority('CUSTOMER')" th:href="@{/shopping-cart}">Shopping cart</a>
+                </li>
+
+                <li class="nav-item float-right" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" sec:authorize="hasAuthority('CUSTOMER')" th:href="@{/customers/personalInfo}" sec:authentication="principal.username">Customers</a>
+                    <span sec:authorize="hasAuthority('MANAGER')" sec:authentication="principal.username">Username</span>
+                </li>
+                <li class="nav-item ms-3" sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post">
+                        <button class="btn" style="font-size: 12px" type="submit">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
 </div>
 <div layout:fragment="content" class="container-md">
-  <p>Body contents</p>
+    <p>Body contents</p>
 </div>
 </body>
 </html>

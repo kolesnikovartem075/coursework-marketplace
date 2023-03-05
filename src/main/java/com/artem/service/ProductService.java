@@ -28,7 +28,7 @@ public class ProductService {
     private final ImageService imageService;
     private final ProductRepository productRepository;
     private final ProductReadMapper productReadMapper = Mappers.getMapper(ProductReadMapper.class);
-    private final ProductCreateEditMapper productCreateEditMapper = Mappers.getMapper(ProductCreateEditMapper.class);
+    private final ProductCreateEditMapper productCreateEditMapper;
 
     public List<ProductReadDto> findAll() {
         return productRepository.findAll().stream()

@@ -3,10 +3,22 @@ CREATE TABLE customer_directory
     id         BIGSERIAL PRIMARY KEY,
     first_name VARCHAR(64),
     last_name  VARCHAR(64),
-    email      VARCHAR(64),
-    phone      VARCHAR(64),
-    password   VARCHAR(64)
+    email      VARCHAR(64) UNIQUE NOT NULL,
+    phone      VARCHAR(64)        NOT NULL,
+    password   VARCHAR(128),
+    role       VARCHAR(32) DEFAULT 'CUSTOMER'
 );
+
+CREATE TABLE manager
+(
+    id       BIGSERIAL PRIMARY KEY,
+    username VARCHAR(128) UNIQUE,
+    password VARCHAR(128),
+    role     VARCHAR(32) DEFAULT 'MANAGER'
+);
+
+INSERT INTO manager(username, password)
+VALUES ('artem', '{noop}123');
 
 CREATE TABLE product_catalog
 (

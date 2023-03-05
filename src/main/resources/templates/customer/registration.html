@@ -8,7 +8,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-  <form th:action="@{/customers/createCustomer}" method="post" th:object="${customer}">
+  <form th:action="@{/customers/create}" method="post" th:object="${customer}">
     <h4>Registration</h4>
     <div class="row mb-5">
       <label for="firstName" class="col-sm-2 col-form-label">First name:</label>
@@ -31,9 +31,9 @@
     </div>
 
     <div class="row mb-5">
-      <label for="email" class="col-sm-2 col-form-label">First name:</label>
+      <label for="email" class="col-sm-2 col-form-label">Email:</label>
       <div class="col-sm-2">
-        <input type="text" class="form-control" id="email" th:field="*{email}">
+        <input type="email" class="form-control" id="email" th:field="*{email}">
         <div th:if="${bindingResult}">
           <div th:if="${e}" th:each="e : ${bindingResult.getFieldErrors('email')}" th:text="${e.getDefaultMessage()}"  class="text-danger"></div>
         </div>
@@ -51,11 +51,11 @@
     </div>
 
     <div class="row mb-5">
-      <label for="password" class="col-sm-2 col-form-label">Password:</label>
+      <label for="rawPassword" class="col-sm-2 col-form-label">Password:</label>
       <div class="col-sm-2">
-        <input type="text" class="form-control" id="password" th:field="*{password}">
+        <input type="password" class="form-control" id="rawPassword" th:field="*{rawPassword}">
         <div th:if="${bindingResult}">
-          <div th:if="${e}" th:each="e : ${bindingResult.getFieldErrors('password')}" th:text="${e.getDefaultMessage()}"  class="text-danger"></div>
+          <div th:if="${e}" th:each="e : ${bindingResult.getFieldErrors('rawPassword')}" th:text="${e.getDefaultMessage()}"  class="text-danger"></div>
         </div>
       </div>
     </div>

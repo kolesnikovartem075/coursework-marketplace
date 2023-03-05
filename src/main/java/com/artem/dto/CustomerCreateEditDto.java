@@ -2,6 +2,8 @@ package com.artem.dto;
 
 import lombok.Value;
 
+import javax.validation.constraints.NotBlank;
+
 @Value
 public class CustomerCreateEditDto {
 
@@ -9,5 +11,5 @@ public class CustomerCreateEditDto {
     String lastName;
     String email;
     String phone;
-    String password;
+    String rawPassword;
 }

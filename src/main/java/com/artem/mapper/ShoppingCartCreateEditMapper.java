@@ -4,29 +4,38 @@ import com.artem.database.entity.Customer;
 import com.artem.database.entity.ShoppingCart;
 import com.artem.database.repository.CustomerRepository;
 import com.artem.dto.ShoppingCartCreateEditDto;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface ShoppingCartCreateEditMapper {
+@Component
+@RequiredArgsConstructor
+public class ShoppingCartCreateEditMapper implements Mapper<ShoppingCartCreateEditDto, ShoppingCart> {
+
+    private final CustomerRepository customerRepository;
+
+    @Override
+    public ShoppingCart map(ShoppingCartCreateEditDto object) {
+        ShoppingCart shoppingCart = new ShoppingCart();
+        copy(object, shoppingCart);
 
 
-    ShoppingCart map(ShoppingCartCreateEditDto shoppingCartCreateEditDto);
-
-    ShoppingCart map(ShoppingCartCreateEditDto shoppingCartCreateEditDto, @MappingTarget ShoppingCart entity);
-
-    @AfterMapping
-    default void map(ShoppingCartCreateEditDto shoppingCartCreateEditDto,
-                     @MappingTarget ShoppingCart entity,
-                     @Context CustomerRepository customerRepository) {
-        Customer customer = getCustomer(shoppingCartCreateEditDto, customerRepository);
-
-        entity.setCustomer(customer);
+        return shoppingCart;
     }
 
-    private static Customer getCustomer(ShoppingCartCreateEditDto shoppingCartCreateEditDto, CustomerRepository customerRepository) {
-        return customerRepository.findById(shoppingCartCreateEditDto.getCustomerId()).orElseThrow();
+    @Override
+    public ShoppingCart map(ShoppingCartCreateEditDto fromObject, ShoppingCart toObject) {
+        copy(fromObject, toObject);
+        return toObject;
+    }
+
+    private void copy(ShoppingCartCreateEditDto object, ShoppingCart shoppingCart) {
+        Customer customer = getCustomer(object);
+
+        shoppingCart.setCustomer(customer);
+    }
+
+    private Customer getCustomer(ShoppingCartCreateEditDto shoppingCartCreateEditDto) {
+        return customerRepository.findById(shoppingCartCreateEditDto.getCustomerId())
+                .orElseThrow();
     }
 }

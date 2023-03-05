@@ -1,23 +1,37 @@
 package com.artem.mapper;
 
-import com.artem.database.entity.Order;
-import com.artem.database.entity.OrderLine;
+import com.artem.database.entity.Customer;
 import com.artem.database.entity.PaymentMethod;
-import com.artem.database.entity.ProductCatalog;
-import com.artem.database.repository.OrderRepository;
-import com.artem.database.repository.ProductRepository;
-import com.artem.dto.OrderLineCreateEditDto;
+import com.artem.database.repository.CustomerRepository;
 import com.artem.dto.PaymentMethodCreateEditDto;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface PaymentMethodCreateEditMapper {
+@Component
+@RequiredArgsConstructor
+public class PaymentMethodCreateEditMapper implements Mapper<PaymentMethodCreateEditDto, PaymentMethod> {
 
+    private final CustomerRepository customerRepository;
 
-    PaymentMethod map(PaymentMethodCreateEditDto paymentMethodCreateEditDto);
+    @Override
+    public PaymentMethod map(PaymentMethodCreateEditDto object) {
+        PaymentMethod paymentMethod = new PaymentMethod();
+        copy(object, paymentMethod);
 
-    PaymentMethod map(PaymentMethodCreateEditDto paymentMethodCreateEditDto, @MappingTarget PaymentMethod entity);
+        return paymentMethod;
+    }
+
+    @Override
+    public PaymentMethod map(PaymentMethodCreateEditDto fromObject, PaymentMethod toObject) {
+        copy(fromObject, toObject);
+        return toObject;
+    }
+
+    private void copy(PaymentMethodCreateEditDto object, PaymentMethod paymentMethod) {
+        Customer customer = customerRepository.findById(object.getCustomerId()).orElseThrow();
+
+        paymentMethod.setCustomer(customer);
+        paymentMethod.setExpiryDate(object.getExpiryDate());
+        paymentMethod.setAccountNumber(object.getAccountNumber());
+    }
 }

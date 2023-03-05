@@ -2,41 +2,52 @@ package com.artem.mapper;
 
 import com.artem.database.entity.Customer;
 import com.artem.database.entity.Order;
-import com.artem.database.entity.OrderLine;
 import com.artem.database.entity.PaymentMethod;
 import com.artem.database.repository.CustomerRepository;
 import com.artem.database.repository.PaymentMethodRepository;
 import com.artem.dto.OrderCreateEditDto;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Context;
-import org.mapstruct.Mapper;
+import lombok.RequiredArgsConstructor;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring")
-public interface OrderCreateEditMapper {
+import java.time.LocalDate;
 
-    Order map(OrderCreateEditDto orderCreateEditDto);
 
-    Order map(OrderCreateEditDto orderCreateEditDto, @MappingTarget Order entity);
+@RequiredArgsConstructor
+public class OrderCreateEditMapper implements Mapper<OrderCreateEditDto, Order> {
 
-    @AfterMapping
-    default void map(OrderCreateEditDto orderCreateEditDto,
-                     @MappingTarget Order entity,
-                     @Context CustomerRepository customerRepository,
-                     @Context PaymentMethodRepository paymentMethodRepository) {
-        PaymentMethod paymentMethod = getPaymentMethod(orderCreateEditDto, paymentMethodRepository);
-        Customer customer = getCustomer(orderCreateEditDto, customerRepository);
+    private final CustomerRepository customerRepository;
+    private final PaymentMethodRepository paymentMethodRepository;
 
-        entity.setPaymentMethod(paymentMethod);
-        entity.setCustomer(customer);
+    public Order map(OrderCreateEditDto orderCreateEditDto) {
+        Order order = new Order();
+
+        copy(orderCreateEditDto, order);
+        order.setDateCreated(LocalDate.now());
+
+        return order;
     }
 
-    private static Customer getCustomer(OrderCreateEditDto orderCreateEditDto, CustomerRepository customerRepository) {
+    public Order map(OrderCreateEditDto orderCreateEditDto, @MappingTarget Order entity) {
+        copy(orderCreateEditDto, entity);
+        return entity;
+    }
+
+
+    private void copy(OrderCreateEditDto orderCreateEditDto, Order order) {
+        Customer customer = getCustomer(orderCreateEditDto);
+        PaymentMethod paymentMethod = getPaymentMethod(orderCreateEditDto);
+        order.setCustomer(customer);
+        order.setPaymentMethod(paymentMethod);
+        order.setOrderStatus(orderCreateEditDto.getOrderStatus());
+    }
+
+
+    private Customer getCustomer(OrderCreateEditDto orderCreateEditDto) {
         return customerRepository.findById(orderCreateEditDto.getCustomerId())
                 .orElseThrow();
     }
 
-    private static PaymentMethod getPaymentMethod(OrderCreateEditDto orderCreateEditDto, PaymentMethodRepository paymentMethodRepository) {
+    private PaymentMethod getPaymentMethod(OrderCreateEditDto orderCreateEditDto) {
         return paymentMethodRepository.findById(orderCreateEditDto.getPaymentMethodId())
                 .orElseThrow();
     }

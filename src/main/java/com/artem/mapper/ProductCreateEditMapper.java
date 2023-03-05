@@ -2,24 +2,26 @@ package com.artem.mapper;
 
 import com.artem.database.entity.ProductCatalog;
 import com.artem.dto.ProductCreateEditDto;
-import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
 import static java.util.function.Predicate.not;
 
-@Mapper
-public interface ProductCreateEditMapper {
+@Component
+public class ProductCreateEditMapper implements Mapper<ProductCreateEditDto, ProductCatalog> {
 
-    default ProductCatalog map(ProductCreateEditDto productCreateEditDto) {
+    @Override
+    public ProductCatalog map(ProductCreateEditDto productCreateEditDto) {
         ProductCatalog productCatalog = new ProductCatalog();
         copy(productCreateEditDto, productCatalog);
 
         return productCatalog;
     }
 
-    default ProductCatalog map(ProductCreateEditDto fromObject, ProductCatalog toObject) {
+    @Override
+    public ProductCatalog map(ProductCreateEditDto fromObject, ProductCatalog toObject) {
         copy(fromObject, toObject);
         return toObject;
     }
