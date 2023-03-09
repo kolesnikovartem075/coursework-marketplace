@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{parts/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Create order</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h4>Create order</h4>
+    <div class="row">
+        <div th:each="item : ${shoppingCart.items}" class="col-sm-3">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top"
+                     th:src="@{/api/v1/products/{productId}/avatar(productId=${item.productCatalog.id})}"
+                     alt="Product Image">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${item.productCatalog.title}">Product title</h5>
+                    <p class="card-text" th:text="${item.productCatalog.description}">Product description</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" th:text="|Price: ${item.productCatalog.price}|">Product Price</li>
+                    <li class="list-group-item">
+                        <div class="row mb-3">
+                            <label for="quantity" class="col-sm-6 col-form-label">Quantity:</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" id="quantity" name="quantity"
+                                       th:placeholder="${item.quantity}" disabled>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <label for="accountNumber" class="col-sm-2 col-form-label">Total sum:</label>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" id="totalPrice" th:placeholder="${shoppingCart.totalPrice}" disabled>
+            <div th:if="${bindingResult}">
+                <div th:if="${e}" th:each="e : ${bindingResult.getFieldErrors('totalPrice')}"
+                     th:text="${e.getDefaultMessage()}" class="text-danger"></div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <form th:action="@{/payment-method/createUpdatePaymentMethod}" method="post" th:object="${paymentMethod}">
+        <h4>Create payment method</h4>
+        <div class="row mb-5">
+            <label for="accountNumber" class="col-sm-2 col-form-label">Account number:</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" id="accountNumber" th:field="*{accountNumber}">
+                <div th:if="${bindingResult}">
+                    <div th:if="${e}" th:each="e : ${bindingResult.getFieldErrors('accountNumber')}"
+                         th:text="${e.getDefaultMessage()}" class="text-danger"></div>
+                </div>
+            </div>
+
+            <label for="expiryDate" class="col-sm-2 col-form-label">Expiry date:</label>
+            <div class="col-sm-2">
+                <input type="date" class="form-control" id="expiryDate" th:field="*{expiryDate}">
+                <div th:if="${bindingResult}">
+                    <div th:if="${e}" th:each="e : ${bindingResult.getFieldErrors('expiryDate')}"
+                         th:text="${e.getDefaultMessage()}" class="text-danger"></div>
+                </div>
+            </div>
+        </div>
+        <input hidden="hidden" th:value="${shoppingCart.customerId}" name="customerId">
+        <button class="btn btn-primary" type="submit">Add payment method</button>
+    </form>
+
+    <form th:action="@{/order/createOrder}" method="post" th:object="${paymentMethod}">
+        <input hidden="hidden" th:value="${paymentMethod.id}" name="paymentMethodId">
+        <input hidden="hidden" th:value="${shoppingCart.totalPrice}" name="total">
+        <input hidden="hidden" th:value="${shoppingCart.customerId}" name="customerId">
+        <button class="btn btn-primary" type="submit">Create</button>
+    </form>
+</div>
+</body>
+</html>

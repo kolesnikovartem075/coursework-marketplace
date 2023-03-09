@@ -28,7 +28,8 @@ public class PaymentMethodCreateEditMapper implements Mapper<PaymentMethodCreate
     }
 
     private void copy(PaymentMethodCreateEditDto object, PaymentMethod paymentMethod) {
-        Customer customer = customerRepository.findById(object.getCustomerId()).orElseThrow();
+        Customer customer = customerRepository.findById(object.getCustomerId())
+                .orElseThrow();
 
         paymentMethod.setCustomer(customer);
         paymentMethod.setExpiryDate(object.getExpiryDate());

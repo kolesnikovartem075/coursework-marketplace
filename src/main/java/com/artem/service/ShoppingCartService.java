@@ -76,6 +76,16 @@ public class ShoppingCartService {
                 })
                 .orElse(false);
     }
+    @Transactional
+    public boolean delete(Long id) {
+        return shoppingCartRepository.findById(id)
+                .map(entity -> {
+                    shoppingCartRepository.delete(entity);
+                    shoppingCartRepository.flush();
+                    return true;
+                })
+                .orElse(false);
+    }
 
     @Transactional
     public void putItem(Long productId, String email) {

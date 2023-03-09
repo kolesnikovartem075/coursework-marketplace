@@ -1,17 +1,20 @@
 package com.artem.mapper;
 
-import com.artem.database.entity.Customer;
-import com.artem.database.entity.Order;
-import com.artem.database.entity.PaymentMethod;
+import com.artem.database.entity.*;
 import com.artem.database.repository.CustomerRepository;
 import com.artem.database.repository.PaymentMethodRepository;
+import com.artem.database.repository.ShoppingCartRepository;
 import com.artem.dto.OrderCreateEditDto;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
 
 
+@Component
 @RequiredArgsConstructor
 public class OrderCreateEditMapper implements Mapper<OrderCreateEditDto, Order> {
 
@@ -22,6 +25,7 @@ public class OrderCreateEditMapper implements Mapper<OrderCreateEditDto, Order> 
         Order order = new Order();
 
         copy(orderCreateEditDto, order);
+        order.setOrderStatus(OrderStatus.CREATED);
         order.setDateCreated(LocalDate.now());
 
         return order;
@@ -34,13 +38,13 @@ public class OrderCreateEditMapper implements Mapper<OrderCreateEditDto, Order> 
 
 
     private void copy(OrderCreateEditDto orderCreateEditDto, Order order) {
-        Customer customer = getCustomer(orderCreateEditDto);
-        PaymentMethod paymentMethod = getPaymentMethod(orderCreateEditDto);
+        var customer = getCustomer(orderCreateEditDto);
+        var paymentMethod = getPaymentMethod(orderCreateEditDto);
+
         order.setCustomer(customer);
         order.setPaymentMethod(paymentMethod);
-        order.setOrderStatus(orderCreateEditDto.getOrderStatus());
+        order.setOrderTotal(orderCreateEditDto.getTotal());
     }
-
 
     private Customer getCustomer(OrderCreateEditDto orderCreateEditDto) {
         return customerRepository.findById(orderCreateEditDto.getCustomerId())

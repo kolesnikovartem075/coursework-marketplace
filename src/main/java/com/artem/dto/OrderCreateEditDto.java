@@ -9,13 +9,7 @@ import java.time.LocalDate;
 public class OrderCreateEditDto {
 
     Long customerId;
-
     Long paymentMethodId;
-
-
-    OrderStatus orderStatus;
-
-    Integer orderTotal;
-
-    LocalDate dateCreated;
+    Long shoppingCartId;
+    Integer total;
 }

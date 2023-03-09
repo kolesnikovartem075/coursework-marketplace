@@ -56,7 +56,7 @@
         </div>
     </div>
 
-    <form th:action="@{/shopping-cart/{customerId}/checkout(customerId=${shoppingCart.customerId})}" method="post">
+    <form th:action="@{/order/create(customerId=${shoppingCart.customerId})}" method="get">
         <button class="btn btn-outline-danger mt-2" type="submit">Checkout</button>
     </form>
 </div>

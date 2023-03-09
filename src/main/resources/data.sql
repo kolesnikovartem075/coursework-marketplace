@@ -40,8 +40,8 @@ CREATE TABLE shopping_cart
 CREATE TABLE shopping_cart_item
 (
     id                 BIGSERIAL PRIMARY KEY,
-    shopping_cart_id   BIGINT REFERENCES shopping_cart,
-    product_catalog_id BIGINT REFERENCES product_catalog,
+    shopping_cart_id   BIGINT REFERENCES shopping_cart  ON DELETE CASCADE,
+    product_catalog_id BIGINT REFERENCES product_catalog  ON DELETE CASCADE,
     quantity           INT
 );
 
@@ -63,7 +63,7 @@ CREATE TABLE customer_order
 (
     id                BIGSERIAL PRIMARY KEY,
     customer_id       BIGINT REFERENCES customer_directory,
-    payment_method_id BIGINT REFERENCES customer_payment_method,
+    payment_method_id BIGINT REFERENCES customer_payment_method ON DELETE CASCADE,
     order_status      VARCHAR(16),
     --     order_status_id   INT REFERENCES customer_order_status,
     order_total       INT,
@@ -75,7 +75,7 @@ CREATE TABLE customer_order_line
 (
     id                 BIGSERIAL PRIMARY KEY,
     product_catalog_id BIGINT REFERENCES product_catalog,
-    customer_order_id  BIGINT REFERENCES customer_order,
+    customer_order_id  BIGINT REFERENCES customer_order  ON DELETE CASCADE,
     quantity           INT,
     price              INT
 );

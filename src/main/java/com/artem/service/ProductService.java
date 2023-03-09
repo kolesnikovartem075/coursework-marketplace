@@ -2,8 +2,6 @@ package com.artem.service;
 
 import com.artem.database.entity.ProductCatalog;
 import com.artem.database.repository.ProductRepository;
-import com.artem.dto.CustomerCreateEditDto;
-import com.artem.dto.CustomerReadDto;
 import com.artem.dto.ProductCreateEditDto;
 import com.artem.dto.ProductReadDto;
 import com.artem.mapper.ProductCreateEditMapper;
@@ -59,6 +57,17 @@ public class ProductService {
                 .map(entity -> {
                     uploadImage(productDto.getImage());
                     return productCreateEditMapper.map(productDto, entity);
+                })
+                .map(productRepository::saveAndFlush)
+                .map(productReadMapper::map);
+    }
+
+    @Transactional
+    public Optional<ProductReadDto> subtractQuantity(Long id, Integer quantity) {
+        return productRepository.findById(id)
+                .map(entity -> {
+                    entity.setQuantity(entity.getQuantity() - quantity);
+                    return entity;
                 })
                 .map(productRepository::saveAndFlush)
                 .map(productReadMapper::map);
