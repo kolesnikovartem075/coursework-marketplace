@@ -9,7 +9,7 @@
 
 
 #### Cusomter can update personal info
-![Screenshot from 2023-03-11 13-25-54](https://user-images.githubusercontent.com/80060514/224482696-eecd5266-334e-4ec5-81bb-5573f6397863.png)
+![Screenshot from 2023-03-11 14-06-59](https://user-images.githubusercontent.com/80060514/224483467-84a98ca6-7845-483a-ad34-f5091a841167.png)
 
 
 #### After than customer goes to products main page, where he can add product to shopping cart
