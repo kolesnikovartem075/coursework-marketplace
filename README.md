@@ -6,7 +6,7 @@ This application gives the opportunity to you to manage user's subscriptions for
 The **customer** login or register into site.
 ![Screenshot from 2023-03-11 13-25-06](https://user-images.githubusercontent.com/80060514/224482643-2fe18234-985f-4855-8471-26bca4fd30bf.png)
 ![Screenshot from 2023-03-11 13-25-15](https://user-images.githubusercontent.com/80060514/224482658-9a85a5ae-ec3f-4d26-b06a-079cc330f619.png)
-![Screenshot from 2023-03-11 13-25-39](https://user-images.githubusercontent.com/80060514/224482668-542ca361-ef9b-4523-8542-b9db6fde71c0.png)
+![Screenshot from 2023-03-11 13-59-55](https://user-images.githubusercontent.com/80060514/224483138-b323c3b0-2bd0-4bac-a8da-61317bc969c1.png)
 Cusomter can update personal info
 ![Screenshot from 2023-03-11 13-25-54](https://user-images.githubusercontent.com/80060514/224482696-eecd5266-334e-4ec5-81bb-5573f6397863.png)
 After than customer goes to products main page, where he can add product to shopping cart
