@@ -25,6 +25,6 @@ After creating the order, customer goes to order details and can see the order s
 Manager can check all orders
 ![Screenshot from 2023-03-11 13-42-06](https://user-images.githubusercontent.com/80060514/224482947-91429365-1852-4fba-bf49-ee2b43dfb87a.png)
 Manager can update order status. Let's select ON THE WAY status.
-![Screenshot from 2023-03-11 13-43-10](https://user-images.githubusercontent.com/80060514/224482965-aa10efe1-dfaf-49e4-9705-f3ab3086d8cd.png)
+![image_2023-03-11_13-58-52](https://user-images.githubusercontent.com/80060514/224483059-91e4b216-9ebb-4b64-9648-e7d632356099.png)
 Customer can see order status in real time
 ![Screenshot from 2023-03-11 13-49-00](https://user-images.githubusercontent.com/80060514/224482993-a625e929-365e-4b9c-942f-847bf192d896.png)
