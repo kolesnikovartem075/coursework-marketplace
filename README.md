@@ -1,5 +1,4 @@
 # Coursework-Marketplace
-This application gives the opportunity to you to manage user's subscriptions for sport clubs.
 
 ##### Technologies: Java 17, Spring(Boot, Data, Web), Thymeleaf, Bootstrap, Validation, Liquibase, Docker
 
