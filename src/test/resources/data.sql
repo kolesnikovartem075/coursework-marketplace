@@ -45,12 +45,6 @@ CREATE TABLE shopping_cart_item
     quantity           INT
 );
 
-CREATE TABLE customer_order_status
-(
-    id     SERIAL PRIMARY KEY,
-    status VARCHAR(16)
-);
-
 CREATE TABLE customer_payment_method
 (
     id             BIGSERIAL PRIMARY KEY,

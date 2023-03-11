@@ -20,7 +20,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(urlConfig -> urlConfig
-                        .antMatchers("/js/**", "/css/**").permitAll()
+                        .antMatchers("/js/**", "/css/**", "/images/**").permitAll()
                         .antMatchers("/login", "/products", "/customers/registration", "/customers/create", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .antMatchers("/customers/{\\d+}/delete", "/customers").hasAuthority(MANAGER.getAuthority())
                         .antMatchers("/products/{\\d+}/**").hasAuthority(MANAGER.getAuthority())

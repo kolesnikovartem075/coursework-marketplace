@@ -24,11 +24,11 @@ public class PaymentMethodController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("shoppingCart", paymentMethod);
             redirectAttributes.addFlashAttribute("bindingResult", bindingResult);
-            return "redirect:/order/create";
+            return "redirect:/orders/create";
         }
         paymentMethodService.findByCustomerId(paymentMethod.getCustomerId())
                 .ifPresentOrElse(entity -> paymentMethodService.update(paymentMethod, entity.getId()), () -> paymentMethodService.create(paymentMethod));
-        return "redirect:/order/create";
+        return "redirect:/orders/create";
     }
 
 }

@@ -33,7 +33,7 @@ public class ShoppingCartController {
                 .map(shoppingCart -> {
                     model.addAttribute("shoppingCart", shoppingCart);
                     return "shoppingCart/shoppingCart";
-                }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                }).orElseGet(() -> "shoppingCart/shoppingCartEmpty");
     }
 
     @PostMapping("/createShoppingCart")

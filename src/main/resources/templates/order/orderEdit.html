@@ -9,8 +9,8 @@
 <body>
 <div layout:fragment="content">
     <h4>Order status</h4>
+    <form th:action="@{/orders/{orderId}/updateOrder(orderId=${order.id})}" method="post">
     <div class="row">
-        <p>Products ordered</p>
         <div th:each="item : ${order.orderLines}" class="col-sm-3">
             <div class="card" style="width: 18rem;">
                 <img class="card-img-top"
@@ -36,26 +36,37 @@
         </div>
     </div>
 
-    <div class="row mb-5 mt-3">
+    <div class="row mb-5 mt-5">
         <label for="orderTotal" class="col-sm-2 col-form-label">Total sum:</label>
-        <div class="col-sm-2">
+        <div class="col-sm-2 mb-5">
             <input type="text" class="form-control" id="orderTotal" th:placeholder="${order.orderTotal}" disabled>
             <div th:if="${bindingResult}">
                 <div th:if="${e}" th:each="e : ${bindingResult.getFieldErrors('orderTotal')}"
                      th:text="${e.getDefaultMessage()}" class="text-danger"></div>
             </div>
         </div>
-    </div>
-    <div class="row mb-5">
-        <label for="orderStatus" class="col-sm-2 row col-form-label">Order status:</label>
-        <div class="col-sm-2">
-            <input type="text" class="form-control" id="orderStatus" th:placeholder="${order.orderStatus}" disabled>
-            <div th:if="${bindingResult}">
-                <div th:if="${e}" th:each="e : ${bindingResult.getFieldErrors('orderTotal')}"
-                     th:text="${e.getDefaultMessage()}" class="text-danger"></div>
+            <div class="row">
+                <label for="orderStatus" class="col-sm-2 col-form-label">Order status:</label>
+                <div class="col-sm-8 mb-5">
+                    <select class="form-select form-select-sm col-md-4 w-25" name="orderStatus" id="orderStatus">
+                        <option th:each="status : ${statusList}"
+                                th:value="${status.name()}"
+                                th:if="${order.orderStatus.name()}"
+                                th:selected="${order.orderStatus.name().equals(status.name())}"
+                                th:text="${status.name()}">Activity
+                        </option>
+                        <option th:each="status : ${statusList}"
+                                th:value="${status.name()}"
+                                th:if="${order.orderStatus.name()}"
+                                th:selected="${order.orderStatus.name().equals(status.name())}"
+                                th:text="${status.name()}">Activity
+                        </option>
+                    </select>
+                </div>
             </div>
-        </div>
-</div>
+    </div>
+        <button class="btn btn-primary mt-2" type="submit">Update</button>
+    </form>
 </div>
 </body>
 </html>

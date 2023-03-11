@@ -12,4 +12,5 @@ public class OrderCreateEditDto {
     Long paymentMethodId;
     Long shoppingCartId;
     Integer total;
+    OrderStatus orderStatus;
 }

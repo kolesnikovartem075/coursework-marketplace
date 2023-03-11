@@ -16,11 +16,14 @@
                 <li class="nav-item">
                     <a class="nav-link" sec:authorize="hasAuthority('MANAGER')" th:href="@{/customers/}">Customers</a>
                 </li>
-                <li class="nav-item ms-2">
+                <li class="nav-item">
                     <a class="nav-link" sec:authorize="hasAuthority('CUSTOMER')" th:href="@{/shopping-cart}">Shopping cart</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/orders}">Orders</a>
+                </li>
 
-                <li class="nav-item float-right" sec:authorize="isAuthenticated()">
+                <li class="nav-item ms-5" sec:authorize="isAuthenticated()">
                     <a class="nav-link" sec:authorize="hasAuthority('CUSTOMER')" th:href="@{/customers/personalInfo}" sec:authentication="principal.username">Customers</a>
                     <span sec:authorize="hasAuthority('MANAGER')" sec:authentication="principal.username">Username</span>
                 </li>

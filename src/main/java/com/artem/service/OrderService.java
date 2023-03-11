@@ -2,6 +2,7 @@ package com.artem.service;
 
 import com.artem.database.repository.OrderRepository;
 import com.artem.dto.*;
+import com.artem.mapper.CustomerReadMapper;
 import com.artem.mapper.OrderCreateEditMapper;
 import com.artem.mapper.OrderReadMapper;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,19 @@ public class OrderService {
     private final CustomerService customerService;
     private final ShoppingCartService shoppingCartService;
     private final OrderLineService orderLineService;
+
+
+    public List<OrderReadDto> findAll() {
+        return orderRepository.findAll().stream()
+                .map(orderReadMapper::map)
+                .toList();
+    }
+
+    public List<OrderReadDto> findAllByCustomer(UserDetails userDetails) {
+        return orderRepository.findByCustomerEmail(userDetails.getUsername()).stream()
+                .map(orderReadMapper::map)
+                .toList();
+    }
 
     public Optional<OrderReadDto> findById(Long id) {
         return orderRepository.findById(id)
@@ -65,11 +79,6 @@ public class OrderService {
                 .orElse(false);
     }
 
-    public Optional<OrderReadDto> findBy(UserDetails userDetails) {
-        return orderRepository.findByCustomerEmail(userDetails.getUsername())
-                .map(orderReadMapper::map);
-    }
-
     private void updateQuantity(OrderLineReadDto orderLine) {
         productService.subtractQuantity(orderLine.getProductCatalog().getId(), orderLine.getQuantity());
     }
@@ -94,5 +103,13 @@ public class OrderService {
                 .map(it -> new OrderLineCreateEditDto(orderDto.getId(), it.getProductCatalog().getId(), it.getQuantity(), it.getProductCatalog().getPrice()))
                 .map(orderLineService::create)
                 .toList();
+    }
+
+    @Transactional
+    public Optional<OrderReadDto> update(Long id, OrderCreateEditDto order) {
+        return orderRepository.findById(id)
+                .map(entity -> orderCreateEditMapper.map(order, entity))
+                .map(orderRepository::saveAndFlush)
+                .map(orderReadMapper::map);
     }
 }

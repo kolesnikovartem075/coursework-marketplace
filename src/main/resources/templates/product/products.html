@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
-      layout:decorate="~{parts/layout}">
+      layout:decorate="~{parts/layout}" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Products</title>
@@ -22,7 +22,7 @@
                         <li class="list-group-item" th:text="|Quantity: ${product.price}|">Product price</li>
                     </ul>
                     <div class="card-body">
-                        <a th:href="@{/products/{productId}(productId=${product.id})}" class="card-link">Product Info</a>
+                        <a sec:authorize="hasAuthority('MANAGER')" th:href="@{/products/{productId}(productId=${product.id})}" class="card-link">Product Info</a>
                         <a th:href="@{/shopping-cart/{productId}/put(productId=${product.id})}" class="card-link">Add to shopping cart</a>
                     </div>
                 </div>

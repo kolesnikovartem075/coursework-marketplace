@@ -48,12 +48,12 @@
 
     </div>
 
-    <form th:action="@{/payment-method/createUpdatePaymentMethod}" method="post" th:object="${paymentMethod}">
+    <form th:action="@{/payment-method/createUpdatePaymentMethod}" method="post">
         <h4>Create payment method</h4>
         <div class="row mb-5">
             <label for="accountNumber" class="col-sm-2 col-form-label">Account number:</label>
             <div class="col-sm-2">
-                <input type="text" class="form-control" id="accountNumber" th:field="*{accountNumber}">
+                <input type="text" class="form-control" id="accountNumber" th:value="${paymentMethod?.accountNumber}" name="accountNumber">
                 <div th:if="${bindingResult}">
                     <div th:if="${e}" th:each="e : ${bindingResult.getFieldErrors('accountNumber')}"
                          th:text="${e.getDefaultMessage()}" class="text-danger"></div>
@@ -62,7 +62,7 @@
 
             <label for="expiryDate" class="col-sm-2 col-form-label">Expiry date:</label>
             <div class="col-sm-2">
-                <input type="date" class="form-control" id="expiryDate" th:field="*{expiryDate}">
+                <input type="date" class="form-control" id="expiryDate"  th:value="${paymentMethod?.expiryDate}" name="expiryDate">
                 <div th:if="${bindingResult}">
                     <div th:if="${e}" th:each="e : ${bindingResult.getFieldErrors('expiryDate')}"
                          th:text="${e.getDefaultMessage()}" class="text-danger"></div>
@@ -73,7 +73,7 @@
         <button class="btn btn-primary" type="submit">Add payment method</button>
     </form>
 
-    <form th:action="@{/order/createOrder}" method="post" th:object="${paymentMethod}">
+    <form th:action="@{/orders/createOrder}" method="post" th:object="${paymentMethod}" th:if="${paymentMethod}">
         <input hidden="hidden" th:value="${paymentMethod.id}" name="paymentMethodId">
         <input hidden="hidden" th:value="${shoppingCart.totalPrice}" name="total">
         <input hidden="hidden" th:value="${shoppingCart.customerId}" name="customerId">

@@ -23,16 +23,14 @@ public class OrderCreateEditMapper implements Mapper<OrderCreateEditDto, Order> 
 
     public Order map(OrderCreateEditDto orderCreateEditDto) {
         Order order = new Order();
-
         copy(orderCreateEditDto, order);
-        order.setOrderStatus(OrderStatus.CREATED);
-        order.setDateCreated(LocalDate.now());
+
 
         return order;
     }
 
     public Order map(OrderCreateEditDto orderCreateEditDto, @MappingTarget Order entity) {
-        copy(orderCreateEditDto, entity);
+        entity.setOrderStatus(orderCreateEditDto.getOrderStatus());
         return entity;
     }
 
@@ -43,6 +41,8 @@ public class OrderCreateEditMapper implements Mapper<OrderCreateEditDto, Order> 
 
         order.setCustomer(customer);
         order.setPaymentMethod(paymentMethod);
+        order.setOrderStatus(OrderStatus.CREATED);
+        order.setDateCreated(LocalDate.now());
         order.setOrderTotal(orderCreateEditDto.getTotal());
     }
 

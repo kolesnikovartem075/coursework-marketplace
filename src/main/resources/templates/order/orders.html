@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{parts/layout}" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h4>Orders</h4>
+    <table class="table table-hover table-light table-sm">
+        <caption>List of customers</caption>
+        <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Customer</th>
+            <th scope="col">Order total</th>
+            <th scope="col">Order status</th>
+            <th scope="col">Date created</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <th scope="row" th:text="${order.id}"></th>
+            <td th:text="${order.customer.email}"></td>
+            <td th:text="${order.orderTotal}"></td>
+            <td th:text="${order.orderStatus.name()}"></td>
+            <td th:text="${order.dateCreated}"></td>
+            <td sec:authorize="hasAuthority('MANAGER')"><a class="btn btn-outline-primary p-lg" th:href="@{'/orders/' + ${order.id} + '/update'}">Details</a>
+            <td sec:authorize="hasAuthority('CUSTOMER')"><a class="btn btn-outline-primary p-lg" th:href="@{'/orders/' + ${order.id}}">Details</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

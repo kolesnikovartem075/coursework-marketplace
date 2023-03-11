@@ -11,6 +11,7 @@ public class OrderReadDto {
 
     Long id;
     OrderStatus orderStatus;
+    CustomerReadDto customer;
     Integer orderTotal;
     List<OrderLineReadDto> orderLines;
 
