@@ -34,14 +34,15 @@ CREATE TABLE product_catalog
 CREATE TABLE shopping_cart
 (
     id          BIGSERIAL PRIMARY KEY,
-    customer_id BIGINT REFERENCES customer_directory
+    customer_id BIGINT REFERENCES customer_directory,
+    UNIQUE (id, customer_id)
 );
 
 CREATE TABLE shopping_cart_item
 (
     id                 BIGSERIAL PRIMARY KEY,
-    shopping_cart_id   BIGINT REFERENCES shopping_cart  ON DELETE CASCADE,
-    product_catalog_id BIGINT REFERENCES product_catalog  ON DELETE CASCADE,
+    shopping_cart_id   BIGINT REFERENCES shopping_cart ON DELETE CASCADE,
+    product_catalog_id BIGINT REFERENCES product_catalog ON DELETE CASCADE,
     quantity           INT
 );
 
@@ -63,13 +64,13 @@ CREATE TABLE customer_order
     order_total       INT,
     date_created      DATE
 );
-drop table customer_order;
+
 
 CREATE TABLE customer_order_line
 (
     id                 BIGSERIAL PRIMARY KEY,
     product_catalog_id BIGINT REFERENCES product_catalog,
-    customer_order_id  BIGINT REFERENCES customer_order  ON DELETE CASCADE,
+    customer_order_id  BIGINT REFERENCES customer_order ON DELETE CASCADE,
     quantity           INT,
     price              INT
 );
