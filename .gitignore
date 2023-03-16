@@ -25,4 +25,4 @@ pnpm-debug.log*
 build
 
 # image folder
-/images
+images/
